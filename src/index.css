@@ -1122,16 +1122,11 @@
 /* ── Header ── */
 .tc-header {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
   gap: 8px;
   margin-bottom: 10px;
-}
-@media (min-width: 400px) {
-  .tc-header {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
 }
 
 .tc-avatar-wrap {

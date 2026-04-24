@@ -217,7 +217,7 @@ export const TokenCard: React.FC<TokenCardProps> = ({ token }) => {
         </div>
 
         {/* Price + signal badge row */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4, flexShrink: 0 }}>
           <PriceBadge price={token.price_usd} change={token.price_change_24h} />
           {isHigh ? (
             <span className="tc-badge tc-badge--high">🔥 HIGH</span>

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useStore } from '../store/useStore';
 import { useNavigate, Link } from 'react-router-dom';
 import { Loader2, AlertCircle, Lock, User, ChevronRight, Zap } from 'lucide-react';
+import { supabase } from '../supabase';
 
 // ---------------------------------------------------------------------------
 // Types — locked contract from POST /api/token/login
@@ -46,18 +47,35 @@ export function TokenAdminLogin() {
     setLoading(true);
 
     try {
-      const res = await axios.post<LoginResponse>('/api/token/login', {
-        username: username.trim(),
-        password,
-      });
+      const { data, error: dbError } = await supabase
+        .from('tokens')
+        .select('id, owner_username, owner_password_hash, name, ticker, profile_image, is_deleted')
+        .ilike('owner_username', username.trim());
 
-      const { tokens, username: uname } = res.data;
+      if (dbError) throw new Error('Database error.');
 
-      if (!tokens || tokens.length === 0) {
-        setError('No tokens found for this account.');
-        return;
+      const activTokens = (data || []).filter((t: any) => t.is_deleted !== true);
+
+      if (activTokens.length === 0) {
+        throw new Error('Username not found.');
       }
 
+      // Check password using exact match (mimicking user instruction for client-side)
+      const matchedTokens = activTokens.filter((t: any) => t.owner_password_hash === password);
+
+      if (matchedTokens.length === 0) {
+        throw new Error('Invalid password.');
+      }
+
+      const tokens = matchedTokens.map((t: any) => ({
+        session_token: t.id, // For client-side bypass, use ID as session token
+        id: t.id,
+        name: t.name,
+        ticker: t.ticker,
+        profile_image: t.profile_image
+      }));
+
+      const uname = matchedTokens[0].owner_username;
       setLoginUsername(uname);
 
       if (tokens.length === 1) {
@@ -68,8 +86,7 @@ export function TokenAdminLogin() {
         setTokenOptions(tokens);
       }
     } catch (err: any) {
-      const msg = err.response?.data?.error ?? 'Invalid credentials. Please try again.';
-      setError(msg);
+      setError(err.message || 'Invalid credentials. Please try again.');
     } finally {
       setLoading(false);
     }

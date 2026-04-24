@@ -242,12 +242,12 @@ function SignalCardSkeleton() {
       }}
     >
       <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 14 }}>
-        <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'rgba(255,255,255,0.05)' }} />
-        <div style={{ flex: 1 }}>
+        <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'rgba(255,255,255,0.05)', flexShrink: 0 }} />
+        <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ height: 13, width: '50%', background: 'rgba(255,255,255,0.05)', borderRadius: 6, marginBottom: 6 }} />
           <div style={{ height: 10, width: '30%', background: 'rgba(255,255,255,0.04)', borderRadius: 6 }} />
         </div>
-        <div style={{ width: 56, height: 20, background: 'rgba(255,255,255,0.04)', borderRadius: 50 }} />
+        <div style={{ width: 56, height: 20, background: 'rgba(255,255,255,0.04)', borderRadius: 50, flexShrink: 0 }} />
       </div>
       {[1, 2, 3].map((i) => (
         <div key={i} style={{ height: 44, background: 'rgba(255,255,255,0.03)', borderRadius: 10, marginBottom: 6 }} />
@@ -261,7 +261,7 @@ function PostSkeleton() {
     <div className="explore-post-row animate-pulse">
       <div className="flex items-start gap-3">
         <div className="w-10 h-10 rounded-full bg-white/5 flex-shrink-0" />
-        <div className="flex-1 space-y-2">
+        <div className="flex-1 space-y-2 min-w-0">
           <div className="flex gap-2">
             <div className="h-3.5 bg-white/5 rounded w-24" />
             <div className="h-3.5 bg-white/5 rounded w-12" />
@@ -552,12 +552,12 @@ export function Explore() {
                   </div>
 
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-white font-bold text-sm uppercase truncate group-hover:text-[#FACC15] transition-colors font-['Syne']">
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <span className="text-white font-bold text-sm uppercase truncate group-hover:text-[#FACC15] transition-colors font-['Syne'] flex-1">
                         {token.name}
                       </span>
                     </div>
-                    <span className="text-white/40 font-mono text-xs">${token.ticker}</span>
+                    <span className="text-white/40 font-mono text-xs truncate block">${token.ticker}</span>
                   </div>
 
                   <div className="text-right flex-shrink-0">
@@ -704,11 +704,11 @@ export function Explore() {
                   />
 
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-1.5 mb-1 flex-wrap">
-                      <span className="text-white font-bold text-sm uppercase group-hover:text-[#00FF88] transition-colors font-['Syne']">
+                    <div className="flex items-center gap-1.5 mb-1 flex-wrap min-w-0">
+                      <span className="text-white font-bold text-sm uppercase group-hover:text-[#00FF88] transition-colors font-['Syne'] truncate max-w-[200px]">
                         {post.token_name}
                       </span>
-                      <span className="text-white/35 font-mono text-xs">${post.token_ticker}</span>
+                      <span className="text-white/35 font-mono text-xs truncate max-w-[80px]">${post.token_ticker}</span>
                       {post.post_type && post.post_type !== 'status' && (
                         <span className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded border border-white/10 text-white/40">
                           {post.post_type}
